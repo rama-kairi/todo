@@ -1,38 +1,47 @@
 package todo
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 // AddTodo adds a new todo item to the list
-func (t *todoList) AddTodo(newTodo string) error {
+func (t *todoList) AddTodo(newTodo []string) {
+	t.loadFromJson()
+
 	newTodoIns := todo{
-		Task:      newTodo,
+		ID:        t.newTodoId(),
+		Task:      strings.Join(newTodo, " "),
 		Completed: false,
 		Added:     time.Now(),
 	}
 	t.todoStore = append(t.todoStore, newTodoIns)
 
 	// Save the todo list to a json file
-	t.SaveToJson()
-	return nil
+	t.saveToJson()
+	fmt.Println("Added todo:", newTodo)
 }
 
 // RemoveTodo removes a todo item from the list
-func (t *todoList) RemoveTodo(todo string) error {
+func (t *todoList) RemoveTodo(todoId int) {
+	t.loadFromJson()
+
 	for i, v := range t.todoStore {
-		if v.Task == todo {
+		if v.ID == todoId {
 			t.todoStore = append(t.todoStore[:i], t.todoStore[i+1:]...)
 		}
 	}
-	// Save the todo list to a json file
-	t.SaveToJson()
-	return nil
+
+	t.saveToJson()
+	fmt.Println("Removed todo with Id: ", todoId)
 }
 
 // ListTodo lists all todo items
-func (t *todoList) ListTodo() []string {
-	var todoList []string
+func (t *todoList) ListTodo() {
+	t.loadFromJson()
+
 	for _, v := range t.todoStore {
-		todoList = append(todoList, v.Task)
+		fmt.Printf("%d. %s\n", v.ID, v.Task)
 	}
-	return todoList
 }

@@ -2,75 +2,53 @@ package todo
 
 import (
 	"encoding/json"
-	"io"
+	"fmt"
 	"os"
 )
 
 // SaveToJson - This function saves the todo list to a json file
-func (t todoList) SaveToJson() {
-	// Delete the file if it exists
-	if _, err := os.Stat("db.json"); !os.IsNotExist(err) {
-		os.Remove("db.json")
-	}
-
-	// Create a Json file with name `db.json`
-	os.Create("db.json")
-
-	// Open the file
-	file, err := os.OpenFile("db.json", os.O_RDWR, 0o644)
-	if err != nil {
-		panic(err)
-	}
-
+func (t todoList) saveToJson() {
 	// Marshal the data from t.todoStore
 	data, err := json.Marshal(t.todoStore)
 	if err != nil {
 		panic(err)
 	}
 
-	// Write the data to the file
-	_, err = file.Write([]byte(data))
-	if err != nil {
-		panic(err)
-	}
-
-	// Close the file
-	err = file.Close()
-	if err != nil {
+	if err := os.WriteFile("db.json", data, 0o644); err != nil {
 		panic(err)
 	}
 }
 
 // LoadFromJson - This function loads the todo list from a json file
-func (t todoList) LoadFromJson() {
-	// Check if the file exists
+func (t *todoList) loadFromJson() {
+	// Create a file if it doesn't exist
 	if _, err := os.Stat("db.json"); os.IsNotExist(err) {
-		os.Create("db.json")
-	}
-
-	// Open the file
-	file, err := os.OpenFile("db.json", os.O_RDONLY, 0o644)
-	if err != nil {
-		panic(err)
-	}
-
-	// convert the file to a byte array
-	fileByte, err := io.ReadAll(file)
-	if err != nil {
-		panic(err)
-	}
-
-	if len(fileByte) > 0 {
-		// Unmarshal the data from the file to t.todoStore
-		err = json.Unmarshal([]byte(fileByte), &t.todoStore)
+		_, err := os.Create("db.json")
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	// Close the file
-	err = file.Close()
+	data, err := os.ReadFile("db.json")
 	if err != nil {
 		panic(err)
 	}
+
+	if len(data) > 0 {
+		// Unmarshal the data to t.todoStore
+		err = json.Unmarshal(data, &t.todoStore)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		fmt.Println("No todo's found")
+	}
+}
+
+// newTodoId - This function returns a new todo id
+func (t todoList) newTodoId() int {
+	if len(t.todoStore) == 0 {
+		return 1
+	}
+	return t.todoStore[len(t.todoStore)-1].ID + 1
 }

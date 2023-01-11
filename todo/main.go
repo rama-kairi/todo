@@ -14,6 +14,7 @@ import (
 // }
 
 type todo struct {
+	ID        int
 	Task      string
 	Completed bool
 	Added     time.Time
