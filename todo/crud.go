@@ -45,3 +45,13 @@ func (t *todoList) ListTodo() {
 		fmt.Printf("%d. %s\n", v.ID, v.Task)
 	}
 }
+
+// RemoveAllTodo removes all todo items
+func (t *todoList) RemoveAllTodo() {
+	t.loadFromJson()
+
+	t.todoStore = []todo{}
+
+	t.saveToJson()
+	fmt.Println("Removed all todo items")
+}

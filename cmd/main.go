@@ -14,7 +14,7 @@ var RootCmd = &cobra.Command{
 	Long:  `A Fast and Flexible todo list application built with Go`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
-		fmt.Println("Hello World")
+		fmt.Println("Welcome to Golang Application")
 	},
 }
 
@@ -61,6 +61,17 @@ var ListCmd = &cobra.Command{
 		// 	return
 		// }
 		td.ListTodo()
+	},
+}
+
+// ListCmd represents the list command
+var RmAllCmd = &cobra.Command{
+	Use:   "rmall",
+	Short: "Remove all todo's",
+	Long:  `Remove all todo's from the list`,
+	Run: func(cmd *cobra.Command, args []string) {
+		td := todo.NewTodoService()
+		td.RemoveAllTodo()
 	},
 }
 
