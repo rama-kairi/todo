@@ -40,7 +40,7 @@ var RemoveCmd = &cobra.Command{
 			fmt.Println("Invalid command")
 			return
 		}
-		id, err := strconv.Atoi(args[1])
+		id, err := strconv.Atoi(args[0])
 		if err != nil {
 			fmt.Println("Invalid command")
 			return
@@ -86,7 +86,7 @@ var CompleteTodoCmd = &cobra.Command{
 			fmt.Println("Invalid command")
 			return
 		}
-		id, err := strconv.Atoi(args[1])
+		id, err := strconv.Atoi(args[0])
 		if err != nil {
 			fmt.Println("Invalid command")
 			return

@@ -42,7 +42,7 @@ func (t *todoList) ListTodo() {
 	t.loadFromJson()
 
 	for _, v := range t.todoStore {
-		fmt.Printf("%d. %s\n", v.ID, v.Task)
+		fmt.Printf("%d. %s - %t \n", v.ID, v.Task, v.Completed)
 	}
 }
 
