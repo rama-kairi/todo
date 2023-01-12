@@ -14,7 +14,7 @@ var RootCmd = &cobra.Command{
 	Long:  `A Fast and Flexible todo list application built with Go`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
-		fmt.Println("Welcome to Golang Application")
+		fmt.Println("Welcome to TodoList CLI Application!!")
 	},
 }
 
