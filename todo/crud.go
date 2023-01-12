@@ -55,3 +55,17 @@ func (t *todoList) RemoveAllTodo() {
 	t.saveToJson()
 	fmt.Println("Removed all todo items")
 }
+
+// CompleteTodo - This function marks a todo item as completed
+func (t *todoList) CompleteTodo(id int) {
+	t.loadFromJson()
+
+	for i, v := range t.todoStore {
+		if v.ID == id {
+			t.todoStore[i].Completed = true
+		}
+	}
+
+	t.saveToJson()
+	fmt.Println("Completed todo with Id: ", id)
+}

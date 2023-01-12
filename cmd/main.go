@@ -31,7 +31,7 @@ var AddCmd = &cobra.Command{
 
 // RemoveCmd represents the remove command
 var RemoveCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove [id]",
 	Short: "Remove a todo",
 	Long:  `Remove a todo from the list`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -75,9 +75,27 @@ var RmAllCmd = &cobra.Command{
 	},
 }
 
+// CompleteTodoCmd - marks a todo item as completed
+var CompleteTodoCmd = &cobra.Command{
+	Use:   "complete [id]",
+	Short: "Remove all todo's",
+	Long:  `Remove all todo's from the list`,
+	Run: func(cmd *cobra.Command, args []string) {
+		td := todo.NewTodoService()
+		if len(args[1:]) > 1 {
+			fmt.Println("Invalid command")
+			return
+		}
+		id, err := strconv.Atoi(args[1])
+		if err != nil {
+			fmt.Println("Invalid command")
+			return
+		}
+		td.CompleteTodo(id)
+	},
+}
+
 // Add the add command to the root command
 func init() {
-	RootCmd.AddCommand(AddCmd)
-	RootCmd.AddCommand(RemoveCmd)
-	RootCmd.AddCommand(ListCmd)
+	RootCmd.AddCommand(AddCmd, RemoveCmd, RmAllCmd, ListCmd, CompleteTodoCmd)
 }
